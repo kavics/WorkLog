@@ -8,6 +8,11 @@ internal class Calculator
         var lastDayEntries = SelectLastDayEntries(entries);
         return Summarize(lastDayEntries.ToArray());
     }
+    public Summary CalculateTotal(string text)
+    {
+        var entries = Parse(text);
+        return Summarize(entries.ToArray());
+    }
 
     private IEnumerable<WorkLogEntry> Parse(string text)
     {
@@ -75,7 +80,7 @@ internal class Calculator
         {
             StartDate = entries.First().Time.Date,
             EndDate = entries.Last().Time.Date,
-            Entries = aggregation.ToArray(),
+            Entries = aggregation.OrderBy(e => e.Title).ToArray(),
             TotalTime = TimeSpan.FromTicks(aggregation.Sum(x => x.TotalTime.Ticks))
         };
     }

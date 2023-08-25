@@ -94,8 +94,8 @@ public partial class Form1 : Form
 
                 using var writer = new StreamWriter(dataFile);
                 var now = DateTime.Now;
-                writer.WriteLine(now.ToString("yyyy-MM-dd HH:mm:ss\tCREATED"));
-                writer.WriteLine(now.ToString("yyyy-MM-dd HH:mm:ss\t-"));
+                writer.WriteLine(now.ToString("yyyy-MM-dd HH:mm:ss\tFILE CREATED"));
+                writer.WriteLine(now.ToString("yyyy-MM-dd HH:mm:ss\t"));
                 writer.WriteLine("----");
             }
         }
@@ -157,9 +157,26 @@ public partial class Form1 : Form
         _needToSave = false;
     }
 
-    private void calcButton_Click(object sender, EventArgs e)
+    private void lastDaySummaryButton_Click(object sender, EventArgs e)
     {
         var result = new Calculator().CalculateDay(workLogTextBox.Text);
+        var summaryText = GetSummaryText(result);
+
+        var summaryForm = new SummaryForm(summaryText);
+        var dialogResult = summaryForm.ShowDialog();
+        if (dialogResult != DialogResult.Yes)
+            return;
+
+        EnsureNewLineAtTheEnd();
+        workLogTextBox.AppendText(summaryText);
+
+        workLogTextBox.SelectionStart = workLogTextBox.Text.Length;
+        workLogTextBox.SelectionLength = 0;
+    }
+
+    private void totalSummaryButton_Click(object sender, EventArgs e)
+    {
+        var result = new Calculator().CalculateTotal(workLogTextBox.Text);
         var summaryText = GetSummaryText(result);
 
         var summaryForm = new SummaryForm(summaryText);

@@ -30,10 +30,11 @@
         {
             workLogTextBox = new TextBox();
             saveButton = new Button();
-            calcButton = new Button();
+            lastDaySummaryButton = new Button();
             stopTaskButton = new Button();
             restartTaskButton = new Button();
             newTaskButton = new Button();
+            totalSummaryButton = new Button();
             SuspendLayout();
             // 
             // workLogTextBox
@@ -67,16 +68,16 @@
             saveButton.UseVisualStyleBackColor = true;
             saveButton.Click += saveButton_Click;
             // 
-            // calcButton
+            // lastDaySummaryButton
             // 
-            calcButton.Location = new Point(398, 5);
-            calcButton.Margin = new Padding(4, 2, 4, 2);
-            calcButton.Name = "calcButton";
-            calcButton.Size = new Size(75, 23);
-            calcButton.TabIndex = 2;
-            calcButton.Text = "Calculate";
-            calcButton.UseVisualStyleBackColor = true;
-            calcButton.Click += calcButton_Click;
+            lastDaySummaryButton.Location = new Point(398, 5);
+            lastDaySummaryButton.Margin = new Padding(4, 2, 4, 2);
+            lastDaySummaryButton.Name = "lastDaySummaryButton";
+            lastDaySummaryButton.Size = new Size(120, 23);
+            lastDaySummaryButton.TabIndex = 2;
+            lastDaySummaryButton.Text = "Last day summary";
+            lastDaySummaryButton.UseVisualStyleBackColor = true;
+            lastDaySummaryButton.Click += lastDaySummaryButton_Click;
             // 
             // stopTaskButton
             // 
@@ -108,15 +109,26 @@
             newTaskButton.UseVisualStyleBackColor = true;
             newTaskButton.Click += newTaskButton_Click;
             // 
+            // totalSummaryButton
+            // 
+            totalSummaryButton.Location = new Point(525, 5);
+            totalSummaryButton.Name = "totalSummaryButton";
+            totalSummaryButton.Size = new Size(120, 23);
+            totalSummaryButton.TabIndex = 6;
+            totalSummaryButton.Text = "Total summary";
+            totalSummaryButton.UseVisualStyleBackColor = true;
+            totalSummaryButton.Click += totalSummaryButton_Click;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1000, 561);
+            Controls.Add(totalSummaryButton);
             Controls.Add(newTaskButton);
             Controls.Add(restartTaskButton);
             Controls.Add(stopTaskButton);
-            Controls.Add(calcButton);
+            Controls.Add(lastDaySummaryButton);
             Controls.Add(saveButton);
             Controls.Add(workLogTextBox);
             Margin = new Padding(4, 2, 4, 2);
@@ -132,9 +144,10 @@
 
         private TextBox workLogTextBox;
         private Button saveButton;
-        private Button calcButton;
+        private Button lastDaySummaryButton;
         private Button stopTaskButton;
         private Button restartTaskButton;
         private Button newTaskButton;
+        private Button totalSummaryButton;
     }
 }

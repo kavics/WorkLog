@@ -41,8 +41,10 @@
             textBox1.Multiline = true;
             textBox1.Name = "textBox1";
             textBox1.ReadOnly = true;
+            textBox1.ScrollBars = ScrollBars.Both;
             textBox1.Size = new Size(799, 409);
             textBox1.TabIndex = 0;
+            textBox1.WordWrap = false;
             textBox1.KeyPress += textBox1_KeyPress;
             // 
             // DropButton
