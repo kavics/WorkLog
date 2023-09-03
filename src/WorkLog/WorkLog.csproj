@@ -8,8 +8,4 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
-  <ItemGroup>
-    <None Remove="l1ff2v5x.304~" />
-  </ItemGroup>
-
 </Project>
