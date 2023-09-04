@@ -30,10 +30,11 @@
         {
             workLogTextBox = new TextBox();
             saveButton = new Button();
-            lastDaySummaryButton = new Button();
             stopTaskButton = new Button();
             restartTaskButton = new Button();
             newTaskButton = new Button();
+            dayOffButton = new Button();
+            lastDaySummaryButton = new Button();
             totalSummaryButton = new Button();
             workHoursButton = new Button();
             openDirectoryButton = new Button();
@@ -70,22 +71,11 @@
             saveButton.UseVisualStyleBackColor = true;
             saveButton.Click += saveButton_Click;
             // 
-            // lastDaySummaryButton
-            // 
-            lastDaySummaryButton.Location = new Point(372, 5);
-            lastDaySummaryButton.Margin = new Padding(4, 2, 4, 2);
-            lastDaySummaryButton.Name = "lastDaySummaryButton";
-            lastDaySummaryButton.Size = new Size(120, 23);
-            lastDaySummaryButton.TabIndex = 2;
-            lastDaySummaryButton.Text = "Last day Summary";
-            lastDaySummaryButton.UseVisualStyleBackColor = true;
-            lastDaySummaryButton.Click += lastDaySummaryButton_Click;
-            // 
             // stopTaskButton
             // 
-            stopTaskButton.Location = new Point(179, 5);
+            stopTaskButton.Location = new Point(175, 5);
             stopTaskButton.Name = "stopTaskButton";
-            stopTaskButton.Size = new Size(75, 23);
+            stopTaskButton.Size = new Size(71, 23);
             stopTaskButton.TabIndex = 3;
             stopTaskButton.Text = "Stop Task";
             stopTaskButton.UseVisualStyleBackColor = true;
@@ -93,9 +83,9 @@
             // 
             // restartTaskButton
             // 
-            restartTaskButton.Location = new Point(256, 5);
+            restartTaskButton.Location = new Point(248, 5);
             restartTaskButton.Name = "restartTaskButton";
-            restartTaskButton.Size = new Size(95, 23);
+            restartTaskButton.Size = new Size(76, 23);
             restartTaskButton.TabIndex = 4;
             restartTaskButton.Text = "Restart Task";
             restartTaskButton.UseVisualStyleBackColor = true;
@@ -105,17 +95,38 @@
             // 
             newTaskButton.Location = new Point(102, 5);
             newTaskButton.Name = "newTaskButton";
-            newTaskButton.Size = new Size(75, 23);
+            newTaskButton.Size = new Size(71, 23);
             newTaskButton.TabIndex = 5;
             newTaskButton.Text = "New Task";
             newTaskButton.UseVisualStyleBackColor = true;
             newTaskButton.Click += newTaskButton_Click;
             // 
+            // dayOffButton
+            // 
+            dayOffButton.Location = new Point(326, 5);
+            dayOffButton.Name = "dayOffButton";
+            dayOffButton.Size = new Size(91, 23);
+            dayOffButton.TabIndex = 9;
+            dayOffButton.Text = "Take a day off";
+            dayOffButton.UseVisualStyleBackColor = true;
+            dayOffButton.Click += dayOffButton_Click;
+            // 
+            // lastDaySummaryButton
+            // 
+            lastDaySummaryButton.Location = new Point(439, 5);
+            lastDaySummaryButton.Margin = new Padding(4, 2, 4, 2);
+            lastDaySummaryButton.Name = "lastDaySummaryButton";
+            lastDaySummaryButton.Size = new Size(113, 23);
+            lastDaySummaryButton.TabIndex = 2;
+            lastDaySummaryButton.Text = "Last day Summary";
+            lastDaySummaryButton.UseVisualStyleBackColor = true;
+            lastDaySummaryButton.Click += lastDaySummaryButton_Click;
+            // 
             // totalSummaryButton
             // 
-            totalSummaryButton.Location = new Point(495, 5);
+            totalSummaryButton.Location = new Point(555, 5);
             totalSummaryButton.Name = "totalSummaryButton";
-            totalSummaryButton.Size = new Size(120, 23);
+            totalSummaryButton.Size = new Size(96, 23);
             totalSummaryButton.TabIndex = 6;
             totalSummaryButton.Text = "Total Summary";
             totalSummaryButton.UseVisualStyleBackColor = true;
@@ -123,7 +134,7 @@
             // 
             // workHoursButton
             // 
-            workHoursButton.Location = new Point(617, 5);
+            workHoursButton.Location = new Point(653, 5);
             workHoursButton.Name = "workHoursButton";
             workHoursButton.Size = new Size(120, 23);
             workHoursButton.TabIndex = 7;
@@ -133,7 +144,7 @@
             // 
             // openDirectoryButton
             // 
-            openDirectoryButton.Location = new Point(760, 5);
+            openDirectoryButton.Location = new Point(792, 5);
             openDirectoryButton.Name = "openDirectoryButton";
             openDirectoryButton.Size = new Size(99, 23);
             openDirectoryButton.TabIndex = 8;
@@ -146,6 +157,7 @@
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1000, 561);
+            Controls.Add(dayOffButton);
             Controls.Add(openDirectoryButton);
             Controls.Add(workHoursButton);
             Controls.Add(totalSummaryButton);
@@ -168,10 +180,11 @@
 
         private TextBox workLogTextBox;
         private Button saveButton;
-        private Button lastDaySummaryButton;
         private Button stopTaskButton;
         private Button restartTaskButton;
         private Button newTaskButton;
+        private Button dayOffButton;
+        private Button lastDaySummaryButton;
         private Button totalSummaryButton;
         private Button workHoursButton;
         private Button openDirectoryButton;

@@ -94,7 +94,7 @@ public partial class Form1 : Form
 
                 using var writer = new StreamWriter(dataFile);
                 var now = DateTime.Now;
-                writer.WriteLine(now.ToString("yyyy-MM-dd HH:mm:ss\t") + "FILE CREATED");
+                writer.WriteLine(now.ToString("yyyy-MM-dd HH:mm:ss\t") + "-\tFILE CREATED");
                 writer.WriteLine(now.ToString("yyyy-MM-dd HH:mm:ss\t"));
                 writer.WriteLine("----");
             }
@@ -334,5 +334,12 @@ public partial class Form1 : Form
     {
         var path = Path.GetDirectoryName(GetDataFilePath());
         Process.Start("explorer.exe", path);
+    }
+
+    private void dayOffButton_Click(object sender, EventArgs e)
+    {
+        InsertNewRecord();
+        workLogTextBox.AppendText("-\tszabadság");
+        workLogTextBox.AppendText("\r\n");
     }
 }
