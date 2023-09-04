@@ -41,14 +41,16 @@
             textBox1.Multiline = true;
             textBox1.Name = "textBox1";
             textBox1.ReadOnly = true;
-            textBox1.Size = new Size(799, 409);
+            textBox1.ScrollBars = ScrollBars.Both;
+            textBox1.Size = new Size(1030, 460);
             textBox1.TabIndex = 0;
+            textBox1.WordWrap = false;
             textBox1.KeyPress += textBox1_KeyPress;
             // 
             // DropButton
             // 
             DropButton.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
-            DropButton.Location = new Point(306, 415);
+            DropButton.Location = new Point(306, 466);
             DropButton.Name = "DropButton";
             DropButton.Size = new Size(75, 23);
             DropButton.TabIndex = 1;
@@ -59,7 +61,7 @@
             // KeepButton
             // 
             KeepButton.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
-            KeepButton.Location = new Point(413, 415);
+            KeepButton.Location = new Point(413, 466);
             KeepButton.Name = "KeepButton";
             KeepButton.Size = new Size(75, 23);
             KeepButton.TabIndex = 2;
@@ -71,7 +73,7 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(800, 450);
+            ClientSize = new Size(1031, 501);
             Controls.Add(KeepButton);
             Controls.Add(DropButton);
             Controls.Add(textBox1);
