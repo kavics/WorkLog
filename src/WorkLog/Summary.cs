@@ -19,6 +19,8 @@ internal class SummaryEntry
 
 internal class Summary
 {
+    public static Summary Zero { get; } = new Summary {TotalTime = TimeSpan.Zero};
+
     public DateTime StartDate { get; set; }
     public DateTime EndDate { get; set; }
     public TimeSpan TotalTime { get; set; }

@@ -172,7 +172,7 @@ public partial class Form1 : Form
     private void workHoursButton_Click(object sender, EventArgs e)
     {
         var result = new Calculator().CalculateWorkHours(workLogTextBox.Text);
-        HandleSummaryForm(GetSummaryText(result));
+        HandleSummaryForm(GetWorkDaySummaryText(result));
     }
     private void HandleSummaryForm(string summaryText)
     {
@@ -201,9 +201,9 @@ public partial class Form1 : Form
             using var writer = new StringWriter(CultureInfo.InvariantCulture);
             writer.WriteLine("\t==========================================================================");
             if (result.StartDate == result.EndDate)
-                writer.WriteLine($"\tSUMMARY Period: {result.StartDate:yyyy-MM-dd}");
+                writer.WriteLine($"\tSUMMARY     Period: {result.StartDate:yyyy-MM-dd}");
             else
-                writer.WriteLine($"\tSUMMARY Period: {result.StartDate:yyyy-MM-dd} - {result.EndDate:yyyy-MM-dd}");
+                writer.WriteLine($"\tSUMMARY     Period: {result.StartDate:yyyy-MM-dd} - {result.EndDate:yyyy-MM-dd}");
             writer.WriteLine("\t--------------------------------------------------------------------------");
             writer.WriteLine($"\tTotal time\tTotal time+\tHours\tHours+\tTask");
             writer.WriteLine("\t--------------------------------------------------------------------------");
@@ -221,6 +221,53 @@ public partial class Form1 : Form
             writer.WriteLine($"\t{totalTime:d\\.hh\\:mm\\:ss}\t{totalTime2:d\\.hh\\:mm\\:ss}\t{totalHours:F1}\t{totalHours2:F1}");
 
             writer.WriteLine("\t==========================================================================");
+            return writer.GetStringBuilder().ToString();
+        }
+        finally
+        {
+            CultureInfo.CurrentCulture = backup;
+        }
+    }
+    private string GetWorkDaySummaryText(Summary result)
+    {
+        var backup = CultureInfo.CurrentCulture;
+        CultureInfo.CurrentCulture = CultureInfo.InvariantCulture;
+        try
+        {
+            var totalTime = result.TotalTime;
+            var totalTime2 = TimeSpan.FromTicks(totalTime.Ticks + totalTime.Ticks / 5);
+            var totalHours = totalTime.TotalHours;
+            var totalHours2 = totalTime2.TotalHours;
+
+            using var writer = new StringWriter(CultureInfo.InvariantCulture);
+            writer.WriteLine("\t=====================================================================================================");
+            if (result.StartDate == result.EndDate)
+                writer.WriteLine($"\tWORK HOURS SUMMARY     Period: {result.StartDate:yyyy-MM-dd}");
+            else
+                writer.WriteLine($"\tWORK HOURS SUMMARY     Period: {result.StartDate:yyyy-MM-dd} - {result.EndDate:yyyy-MM-dd}");
+            writer.WriteLine("\t-----------------------------------------------------------------------------------------------------");
+            writer.WriteLine($"\tTotal time\tTotal time+\tHours\tHours+\tExpect\tExpect+\tDay");
+            writer.WriteLine("\t-----------------------------------------------------------------------------------------------------");
+            var totalExpected = 0.0d;
+            var totalExpected2 = 0.0d;
+            foreach (var entry in result.Entries)
+            {
+                var time = entry.TotalTime;
+                var time2 = TimeSpan.FromTicks(time.Ticks + time.Ticks / 5);
+                var hours = time.TotalHours;
+                var hours2 = time2.TotalHours;
+                var expected = entry.Title == "munkanap" ? 6.7d : 0.0d;
+                var expected2 = expected + expected / 5;
+                totalExpected += expected;
+                totalExpected2 += expected2;
+                var text = entry.Data == null ? $"{entry.Title}" : $"{entry.Title}\t{entry.Data}";
+                writer.WriteLine($"\t{time:d\\.hh\\:mm\\:ss}\t{time2:d\\.hh\\:mm\\:ss}\t{hours:F1}\t{hours2:F1}\t{expected:F1}\t{expected2:F1}\t{text}");
+            }
+            writer.WriteLine("\t-----------------------------------------------------------------------------------------------------");
+            writer.WriteLine($"\t{totalTime:d\\.hh\\:mm\\:ss}\t{totalTime2:d\\.hh\\:mm\\:ss}\t{totalHours:F1}\t{totalHours2:F1}\t{totalExpected:F1}\t{totalExpected2:F1}");
+
+            writer.WriteLine("\t=====================================================================================================");
+            writer.WriteLine($"\t\t\t\tDiff:\t{totalHours - totalExpected:F1}\t{totalHours2 - totalExpected2:F1}");
             return writer.GetStringBuilder().ToString();
         }
         finally

@@ -15,7 +15,49 @@ internal class Calculator
     }
     public Summary CalculateWorkHours(string text)
     {
-        throw new NotImplementedException();
+        var allEntries = Parse(text).ToArray();
+        var days = allEntries
+            .GroupBy(x => x.Time.Date)
+            .ToDictionary(x=>x.Key, x=>x.ToArray());
+
+        //2023-07-01 01:43:35	-   FILE CREATED
+        //2023-08-04 00:00:00	-   szabadság
+
+        var startDate = allEntries.First().Time.Date;
+        var finishDate = allEntries.Last().Time.Date;
+        var currentDate = startDate;
+        var summaryEntries = new List<SummaryEntry>();
+        var totalTime = TimeSpan.Zero;
+        while (finishDate >= currentDate)
+        {
+            //var dayEntries = entries.Where(x => x.Time.Date == currentDate).ToArray();
+            if (!days.TryGetValue(currentDate, out var entries))
+                entries = Array.Empty<WorkLogEntry>();
+
+            var dayCategory = entries
+                .FirstOrDefault(x => x.IsStopping && !string.IsNullOrEmpty(x.Data) && x.Data != "FILE CREATED")?.Data
+                    ?? (currentDate.DayOfWeek == DayOfWeek.Saturday || currentDate.DayOfWeek == DayOfWeek.Sunday
+                        ? "hétvége " : "munkanap");
+
+            var summary = Summarize(entries);
+            var dayEntry = new SummaryEntry
+            {
+                TotalTime = summary.TotalTime,
+                Title = dayCategory,
+                Data = currentDate.ToString("yyyy-MM-dd dddd"),
+            };
+            summaryEntries.Add(dayEntry);
+            totalTime += summary.TotalTime;
+            currentDate = currentDate.AddDays(1).Date;
+        }
+
+        return new Summary
+        {
+            StartDate = startDate,
+            EndDate = finishDate,
+            Entries = summaryEntries.ToArray(),
+            TotalTime = totalTime
+        };
     }
 
     private IEnumerable<WorkLogEntry> Parse(string text)
@@ -60,6 +102,9 @@ internal class Calculator
         // 5	"2023-08-02 20:29:30 - Akármi2 | wqer\tyxcv"
         // 6	"2023-08-02 20:39:30 - Akármi"
         // 7	"2023-08-02 20:49:04 - [STOP]"
+
+        if (entries.Length == 0)
+            return Summary.Zero;
 
         var aggregation = new List<SummaryEntry>();
         WorkLogEntry? lastEntry = null;
