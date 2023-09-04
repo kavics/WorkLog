@@ -13,6 +13,10 @@ internal class Calculator
         var entries = Parse(text);
         return Summarize(entries.ToArray());
     }
+    public Summary CalculateWorkHours(string text)
+    {
+        throw new NotImplementedException();
+    }
 
     private IEnumerable<WorkLogEntry> Parse(string text)
     {

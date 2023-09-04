@@ -94,7 +94,7 @@ public partial class Form1 : Form
 
                 using var writer = new StreamWriter(dataFile);
                 var now = DateTime.Now;
-                writer.WriteLine(now.ToString("yyyy-MM-dd HH:mm:ss\tFILE CREATED"));
+                writer.WriteLine(now.ToString("yyyy-MM-dd HH:mm:ss\t") + "FILE CREATED");
                 writer.WriteLine(now.ToString("yyyy-MM-dd HH:mm:ss\t"));
                 writer.WriteLine("----");
             }
@@ -160,25 +160,22 @@ public partial class Form1 : Form
     private void lastDaySummaryButton_Click(object sender, EventArgs e)
     {
         var result = new Calculator().CalculateDay(workLogTextBox.Text);
-        var summaryText = GetSummaryText(result);
-
-        var summaryForm = new SummaryForm(summaryText);
-        var dialogResult = summaryForm.ShowDialog();
-        if (dialogResult != DialogResult.Yes)
-            return;
-
-        EnsureNewLineAtTheEnd();
-        workLogTextBox.AppendText(summaryText);
-
-        workLogTextBox.SelectionStart = workLogTextBox.Text.Length;
-        workLogTextBox.SelectionLength = 0;
+        HandleSummaryForm(GetSummaryText(result));
     }
 
     private void totalSummaryButton_Click(object sender, EventArgs e)
     {
         var result = new Calculator().CalculateTotal(workLogTextBox.Text);
-        var summaryText = GetSummaryText(result);
+        HandleSummaryForm(GetSummaryText(result));
+    }
 
+    private void workHoursButton_Click(object sender, EventArgs e)
+    {
+        var result = new Calculator().CalculateWorkHours(workLogTextBox.Text);
+        HandleSummaryForm(GetSummaryText(result));
+    }
+    private void HandleSummaryForm(string summaryText)
+    {
         var summaryForm = new SummaryForm(summaryText);
         var dialogResult = summaryForm.ShowDialog();
         if (dialogResult != DialogResult.Yes)
@@ -190,15 +187,6 @@ public partial class Form1 : Form
         workLogTextBox.SelectionStart = workLogTextBox.Text.Length;
         workLogTextBox.SelectionLength = 0;
     }
-
-    private void EnsureNewLineAtTheEnd()
-    {
-        if (workLogTextBox.Text.Substring(workLogTextBox.Text.Length - 2) != "\r\n")
-            workLogTextBox.AppendText("\r\n");
-        workLogTextBox.SelectionStart = workLogTextBox.Text.Length;
-        workLogTextBox.SelectionLength = 0;
-    }
-
     private string GetSummaryText(Summary result)
     {
         var backup = CultureInfo.CurrentCulture;
@@ -240,6 +228,15 @@ public partial class Form1 : Form
             CultureInfo.CurrentCulture = backup;
         }
     }
+
+    private void EnsureNewLineAtTheEnd()
+    {
+        if (workLogTextBox.Text.Substring(workLogTextBox.Text.Length - 2) != "\r\n")
+            workLogTextBox.AppendText("\r\n");
+        workLogTextBox.SelectionStart = workLogTextBox.Text.Length;
+        workLogTextBox.SelectionLength = 0;
+    }
+
 
     private void newTaskButton_Click(object sender, EventArgs e)
     {
@@ -284,5 +281,11 @@ public partial class Form1 : Form
         EnsureNewLineAtTheEnd();
         workLogTextBox.AppendText(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss\t"));
         workLogTextBox.Focus();
+    }
+
+    private void openDirectoryButton_Click(object sender, EventArgs e)
+    {
+        var path = Path.GetDirectoryName(GetDataFilePath());
+        Process.Start("explorer.exe", path);
     }
 }
