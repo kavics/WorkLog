@@ -153,4 +153,17 @@ internal class Calculator
             });
         }
     }
+
+    public (TimeSpan workTime, DateTime lastTaskStartedAt, bool isInProgress) GetTodayWorkTime(string text)
+    {
+        var entries = Parse(text);
+        var lastDayEntries = SelectLastDayEntries(entries).ToArray();
+        var lastEntry = lastDayEntries.Last();
+        var summary = Summarize(lastDayEntries);
+
+        return (
+            workTime: lastEntry.Time.Date == DateTime.Today ? summary.TotalTime : TimeSpan.Zero,
+            lastTaskStartedAt: lastEntry.Time,
+            isInProgress: !lastEntry.IsStopping);
+    }
 }
