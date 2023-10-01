@@ -10,9 +10,13 @@ public partial class Form1 : Form
     public Form1()
     {
         InitializeComponent();
+
+        toolStripProgressBar1.Minimum = 0;
+        toolStripProgressBar1.Maximum = 60 * 400; // 400 - 480 min = 6:40 - 8:00
     }
 
     private bool _isControlKeyActive;
+
     private void workLogTextBox_KeyDown(object sender, KeyEventArgs e)
     {
         if (e.KeyCode == Keys.ControlKey)
@@ -75,6 +79,7 @@ public partial class Form1 : Form
     }
 
     private bool _loading;
+
     private void Form1_Load(object sender, EventArgs e)
     {
         _loading = true;
@@ -99,19 +104,24 @@ public partial class Form1 : Form
                 writer.WriteLine("----");
             }
         }
+
         using var reader = new StreamReader(dataFile);
         var text = reader.ReadToEnd();
         workLogTextBox.Text = text;
         workLogTextBox.SelectionStart = workLogTextBox.Text.Length;
         workLogTextBox.SelectionLength = 0;
         _loading = false;
+        _needRefreshDailyProgress = true;
+        timer1.Enabled = true;
     }
 
     private bool _needToSave;
+
     private void workLogTextBox_TextChanged(object sender, EventArgs e)
     {
         if (_loading)
             return;
+        _needRefreshDailyProgress = true;
         if (this.Text.EndsWith("*"))
             return;
         this.Text += " *";
@@ -122,7 +132,8 @@ public partial class Form1 : Form
     {
         if (_needToSave)
         {
-            switch (MessageBox.Show("Data is changed.\r\nDo you want to save changes?", this.Text, MessageBoxButtons.YesNoCancel))
+            switch (MessageBox.Show("Data is changed.\r\nDo you want to save changes?", this.Text,
+                        MessageBoxButtons.YesNoCancel))
             {
                 case DialogResult.Cancel:
                     e.Cancel = true;
@@ -174,12 +185,16 @@ public partial class Form1 : Form
         var result = new Calculator().CalculateWorkHours(workLogTextBox.Text);
         HandleSummaryForm(GetWorkDaySummaryText(result));
     }
+
     private void HandleSummaryForm(string summaryText)
     {
         var summaryForm = new SummaryForm(summaryText);
         var dialogResult = summaryForm.ShowDialog();
         if (dialogResult != DialogResult.Yes)
+        {
+            workLogTextBox.Focus();
             return;
+        }
 
         EnsureNewLineAtTheEnd();
         workLogTextBox.AppendText(summaryText);
@@ -187,6 +202,7 @@ public partial class Form1 : Form
         workLogTextBox.SelectionStart = workLogTextBox.Text.Length;
         workLogTextBox.SelectionLength = 0;
     }
+
     private string GetSummaryText(Summary result)
     {
         var backup = CultureInfo.CurrentCulture;
@@ -215,10 +231,13 @@ public partial class Form1 : Form
                 var hours2 = time2.TotalHours;
 
                 var text = entry.Data == null ? $"{entry.Title}" : $"{entry.Title}\t{entry.Data}";
-                writer.WriteLine($"\t{time:d\\.hh\\:mm\\:ss}\t{time2:d\\.hh\\:mm\\:ss}\t{hours:F1}\t{hours2:F1}\t{text}");
+                writer.WriteLine(
+                    $"\t{time:d\\.hh\\:mm\\:ss}\t{time2:d\\.hh\\:mm\\:ss}\t{hours:F1}\t{hours2:F1}\t{text}");
             }
+
             writer.WriteLine("\t--------------------------------------------------------------------------");
-            writer.WriteLine($"\t{totalTime:d\\.hh\\:mm\\:ss}\t{totalTime2:d\\.hh\\:mm\\:ss}\t{totalHours:F1}\t{totalHours2:F1}");
+            writer.WriteLine(
+                $"\t{totalTime:d\\.hh\\:mm\\:ss}\t{totalTime2:d\\.hh\\:mm\\:ss}\t{totalHours:F1}\t{totalHours2:F1}");
 
             writer.WriteLine("\t==========================================================================");
             return writer.GetStringBuilder().ToString();
@@ -228,6 +247,7 @@ public partial class Form1 : Form
             CultureInfo.CurrentCulture = backup;
         }
     }
+
     private string GetWorkDaySummaryText(Summary result)
     {
         var backup = CultureInfo.CurrentCulture;
@@ -240,14 +260,18 @@ public partial class Form1 : Form
             var totalHours2 = totalTime2.TotalHours;
 
             using var writer = new StringWriter(CultureInfo.InvariantCulture);
-            writer.WriteLine("\t=====================================================================================================");
+            writer.WriteLine(
+                "\t=====================================================================================================");
             if (result.StartDate == result.EndDate)
                 writer.WriteLine($"\tWORK HOURS SUMMARY     Period: {result.StartDate:yyyy-MM-dd}");
             else
-                writer.WriteLine($"\tWORK HOURS SUMMARY     Period: {result.StartDate:yyyy-MM-dd} - {result.EndDate:yyyy-MM-dd}");
-            writer.WriteLine("\t-----------------------------------------------------------------------------------------------------");
+                writer.WriteLine(
+                    $"\tWORK HOURS SUMMARY     Period: {result.StartDate:yyyy-MM-dd} - {result.EndDate:yyyy-MM-dd}");
+            writer.WriteLine(
+                "\t-----------------------------------------------------------------------------------------------------");
             writer.WriteLine($"\tTotal time\tTotal time+\tHours\tHours+\tExpect\tExpect+\tDay");
-            writer.WriteLine("\t-----------------------------------------------------------------------------------------------------");
+            writer.WriteLine(
+                "\t-----------------------------------------------------------------------------------------------------");
             var totalExpected = 0.0d;
             var totalExpected2 = 0.0d;
             foreach (var entry in result.Entries)
@@ -261,12 +285,17 @@ public partial class Form1 : Form
                 totalExpected += expected;
                 totalExpected2 += expected2;
                 var text = entry.Data == null ? $"{entry.Title}" : $"{entry.Title}\t{entry.Data}";
-                writer.WriteLine($"\t{time:d\\.hh\\:mm\\:ss}\t{time2:d\\.hh\\:mm\\:ss}\t{hours:F1}\t{hours2:F1}\t{expected:F1}\t{expected2:F1}\t{text}");
+                writer.WriteLine(
+                    $"\t{time:d\\.hh\\:mm\\:ss}\t{time2:d\\.hh\\:mm\\:ss}\t{hours:F1}\t{hours2:F1}\t{expected:F1}\t{expected2:F1}\t{text}");
             }
-            writer.WriteLine("\t-----------------------------------------------------------------------------------------------------");
-            writer.WriteLine($"\t{totalTime:d\\.hh\\:mm\\:ss}\t{totalTime2:d\\.hh\\:mm\\:ss}\t{totalHours:F1}\t{totalHours2:F1}\t{totalExpected:F1}\t{totalExpected2:F1}");
 
-            writer.WriteLine("\t=====================================================================================================");
+            writer.WriteLine(
+                "\t-----------------------------------------------------------------------------------------------------");
+            writer.WriteLine(
+                $"\t{totalTime:d\\.hh\\:mm\\:ss}\t{totalTime2:d\\.hh\\:mm\\:ss}\t{totalHours:F1}\t{totalHours2:F1}\t{totalExpected:F1}\t{totalExpected2:F1}");
+
+            writer.WriteLine(
+                "\t=====================================================================================================");
             writer.WriteLine($"\t\t\t\tDiff:\t{totalHours - totalExpected:F1}\t{totalHours2 - totalExpected2:F1}");
             return writer.GetStringBuilder().ToString();
         }
@@ -288,6 +317,7 @@ public partial class Form1 : Form
     private void newTaskButton_Click(object sender, EventArgs e)
     {
         InsertNewRecord();
+        workLogTextBox.AppendText("<new task>\r\n");
     }
 
     private void restartTaskButton_Click(object sender, EventArgs e)
@@ -307,6 +337,7 @@ public partial class Form1 : Form
             MessageBox.Show("Select a valid task", this.Text, MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
             return;
         }
+
         InsertNewRecord();
         var entryText = existingEntry.Data == null
             ? $"{existingEntry.Title}"
@@ -334,6 +365,7 @@ public partial class Form1 : Form
     {
         var path = Path.GetDirectoryName(GetDataFilePath());
         Process.Start("explorer.exe", path);
+        workLogTextBox.Focus();
     }
 
     private void dayOffButton_Click(object sender, EventArgs e)
@@ -341,5 +373,36 @@ public partial class Form1 : Form
         InsertNewRecord();
         workLogTextBox.AppendText("-\tszabadság");
         workLogTextBox.AppendText("\r\n");
+    }
+
+    private void timer1_Tick(object sender, EventArgs e)
+    {
+        CalculateDailyProgress();
+    }
+
+    private bool _isInProgress;
+    private TimeSpan _todayWorkTime;
+    private DateTime _lastTaskStartedAt;
+    private bool _needRefreshDailyProgress;
+    private void CalculateDailyProgress()
+    {
+        if (_needRefreshDailyProgress)
+        {
+            // RefreshDailyProgress
+            (_todayWorkTime, _lastTaskStartedAt, _isInProgress) =
+                new Calculator().GetTodayWorkTime(workLogTextBox.Text);
+            if (_isInProgress && DateTime.Today != _lastTaskStartedAt.Date)
+                _lastTaskStartedAt = DateTime.Today;
+            _needRefreshDailyProgress = false;
+        }
+
+        var dt = _isInProgress ? DateTime.Now - _lastTaskStartedAt : TimeSpan.Zero;
+        var time = _todayWorkTime + dt;
+        var time2 = TimeSpan.FromTicks(time.Ticks + time.Ticks / 5);
+        toolStripStatusLabel1.Text = $"{time:hh\\:mm\\:ss} - {time2:hh\\:mm\\:ss}";
+        toolStripProgressBar1.Value = Math.Min(Convert.ToInt32(time.TotalSeconds), toolStripProgressBar1.Maximum);
+        var time3 = TimeSpan.FromMinutes(400) - time;
+        var time4 = TimeSpan.FromMinutes(480) - time2;
+        toolStripStatusLabel2.Text = $"{time3:hh\\:mm\\:ss} - {time4:hh\\:mm\\:ss}";
     }
 }

@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            components = new System.ComponentModel.Container();
             workLogTextBox = new TextBox();
             saveButton = new Button();
             stopTaskButton = new Button();
@@ -38,6 +39,12 @@
             totalSummaryButton = new Button();
             workHoursButton = new Button();
             openDirectoryButton = new Button();
+            statusStrip1 = new StatusStrip();
+            toolStripStatusLabel1 = new ToolStripStatusLabel();
+            toolStripProgressBar1 = new ToolStripProgressBar();
+            toolStripStatusLabel2 = new ToolStripStatusLabel();
+            timer1 = new System.Windows.Forms.Timer(components);
+            statusStrip1.SuspendLayout();
             SuspendLayout();
             // 
             // workLogTextBox
@@ -46,12 +53,12 @@
             workLogTextBox.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             workLogTextBox.Font = new Font("Consolas", 12F, FontStyle.Regular, GraphicsUnit.Point);
             workLogTextBox.HideSelection = false;
-            workLogTextBox.Location = new Point(0, 30);
+            workLogTextBox.Location = new Point(9, 30);
             workLogTextBox.Margin = new Padding(4, 2, 4, 2);
             workLogTextBox.Multiline = true;
             workLogTextBox.Name = "workLogTextBox";
             workLogTextBox.ScrollBars = ScrollBars.Both;
-            workLogTextBox.Size = new Size(1000, 530);
+            workLogTextBox.Size = new Size(1000, 507);
             workLogTextBox.TabIndex = 0;
             workLogTextBox.WordWrap = false;
             workLogTextBox.TextChanged += workLogTextBox_TextChanged;
@@ -144,7 +151,7 @@
             // 
             // openDirectoryButton
             // 
-            openDirectoryButton.Location = new Point(792, 5);
+            openDirectoryButton.Location = new Point(794, 5);
             openDirectoryButton.Name = "openDirectoryButton";
             openDirectoryButton.Size = new Size(99, 23);
             openDirectoryButton.TabIndex = 8;
@@ -152,11 +159,43 @@
             openDirectoryButton.UseVisualStyleBackColor = true;
             openDirectoryButton.Click += openDirectoryButton_Click;
             // 
+            // statusStrip1
+            // 
+            statusStrip1.Items.AddRange(new ToolStripItem[] { toolStripStatusLabel1, toolStripProgressBar1, toolStripStatusLabel2 });
+            statusStrip1.Location = new Point(0, 539);
+            statusStrip1.Name = "statusStrip1";
+            statusStrip1.Size = new Size(1000, 22);
+            statusStrip1.TabIndex = 10;
+            statusStrip1.Text = "statusStrip1";
+            // 
+            // toolStripStatusLabel1
+            // 
+            toolStripStatusLabel1.Name = "toolStripStatusLabel1";
+            toolStripStatusLabel1.Size = new Size(102, 17);
+            toolStripStatusLabel1.Text = "00:00:00 - 00:00:00";
+            // 
+            // toolStripProgressBar1
+            // 
+            toolStripProgressBar1.Name = "toolStripProgressBar1";
+            toolStripProgressBar1.Size = new Size(100, 16);
+            // 
+            // toolStripStatusLabel2
+            // 
+            toolStripStatusLabel2.Name = "toolStripStatusLabel2";
+            toolStripStatusLabel2.Size = new Size(102, 17);
+            toolStripStatusLabel2.Text = "00:00:00 - 00:00:00";
+            // 
+            // timer1
+            // 
+            timer1.Interval = 1000;
+            timer1.Tick += timer1_Tick;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1000, 561);
+            Controls.Add(statusStrip1);
             Controls.Add(dayOffButton);
             Controls.Add(openDirectoryButton);
             Controls.Add(workHoursButton);
@@ -172,6 +211,8 @@
             Text = "WorkLog V1.0";
             FormClosing += Form1_FormClosing;
             Load += Form1_Load;
+            statusStrip1.ResumeLayout(false);
+            statusStrip1.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -188,5 +229,10 @@
         private Button totalSummaryButton;
         private Button workHoursButton;
         private Button openDirectoryButton;
+        private StatusStrip statusStrip1;
+        private ToolStripProgressBar toolStripProgressBar1;
+        private ToolStripStatusLabel toolStripStatusLabel1;
+        private System.Windows.Forms.Timer timer1;
+        private ToolStripStatusLabel toolStripStatusLabel2;
     }
 }
