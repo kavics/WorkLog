@@ -151,7 +151,7 @@
             // 
             // openDirectoryButton
             // 
-            openDirectoryButton.Location = new Point(792, 5);
+            openDirectoryButton.Location = new Point(794, 5);
             openDirectoryButton.Name = "openDirectoryButton";
             openDirectoryButton.Size = new Size(99, 23);
             openDirectoryButton.TabIndex = 8;
