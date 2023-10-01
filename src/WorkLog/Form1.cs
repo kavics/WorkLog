@@ -179,7 +179,10 @@ public partial class Form1 : Form
         var summaryForm = new SummaryForm(summaryText);
         var dialogResult = summaryForm.ShowDialog();
         if (dialogResult != DialogResult.Yes)
+        {
+            workLogTextBox.Focus();
             return;
+        }
 
         EnsureNewLineAtTheEnd();
         workLogTextBox.AppendText(summaryText);
@@ -334,6 +337,7 @@ public partial class Form1 : Form
     {
         var path = Path.GetDirectoryName(GetDataFilePath());
         Process.Start("explorer.exe", path);
+        workLogTextBox.Focus();
     }
 
     private void dayOffButton_Click(object sender, EventArgs e)
