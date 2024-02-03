@@ -121,6 +121,7 @@ public partial class Form1 : Form
     {
         if (_loading)
             return;
+        _lastActivityTime = DateTime.Now;
         _needRefreshDailyProgress = true;
         if (this.Text.EndsWith("*"))
             return;
@@ -378,6 +379,7 @@ public partial class Form1 : Form
     private void timer1_Tick(object sender, EventArgs e)
     {
         CalculateDailyProgress();
+        AutoSave();
     }
 
     private bool _isInProgress;
@@ -405,4 +407,18 @@ public partial class Form1 : Form
         var time4 = TimeSpan.FromMinutes(480) - time2;
         toolStripStatusLabel2.Text = $"{time3:hh\\:mm\\:ss} - {time4:hh\\:mm\\:ss}";
     }
+
+    /* ================================================================================ AUTOSAVE */
+
+    private DateTime _lastActivityTime = DateTime.Now;
+    private static readonly TimeSpan AutoSaveInactivityTime = TimeSpan.FromSeconds(20);
+    private void AutoSave()
+    {
+        if (!_needToSave)
+            return;
+        if (DateTime.Now - _lastActivityTime < AutoSaveInactivityTime)
+            return;
+        Save();
+    }
+
 }
