@@ -53,7 +53,7 @@
             workLogTextBox.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             workLogTextBox.Font = new Font("Consolas", 12F, FontStyle.Regular, GraphicsUnit.Point);
             workLogTextBox.HideSelection = false;
-            workLogTextBox.Location = new Point(9, 30);
+            workLogTextBox.Location = new Point(0, 30);
             workLogTextBox.Margin = new Padding(4, 2, 4, 2);
             workLogTextBox.Multiline = true;
             workLogTextBox.Name = "workLogTextBox";
