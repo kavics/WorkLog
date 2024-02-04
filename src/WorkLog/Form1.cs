@@ -380,6 +380,7 @@ public partial class Form1 : Form
     {
         CalculateDailyProgress();
         AutoSave();
+        DateDiff();
     }
 
     private bool _isInProgress;
@@ -419,6 +420,14 @@ public partial class Form1 : Form
         if (DateTime.Now - _lastActivityTime < AutoSaveInactivityTime)
             return;
         Save();
+    }
+
+    /* ================================================================================ DATE-DIFF */
+
+    private readonly DateTime _futureDate = new DateTime(2027, 02, 19, 13, 00, 00);
+    private void DateDiff()
+    {
+        toolStripStatusLabel3.Text = (DateTime.Now - _futureDate).ToString("dd\\.hh\\:mm\\:ss");
     }
 
 }
