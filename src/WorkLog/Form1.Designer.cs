@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             workLogTextBox = new TextBox();
             saveButton = new Button();
             stopTaskButton = new Button();
@@ -56,6 +57,7 @@
             workLogTextBox.HideSelection = false;
             workLogTextBox.Location = new Point(0, 30);
             workLogTextBox.Margin = new Padding(4, 2, 4, 2);
+            workLogTextBox.MaxLength = 1000000;
             workLogTextBox.Multiline = true;
             workLogTextBox.Name = "workLogTextBox";
             workLogTextBox.ScrollBars = ScrollBars.Both;
@@ -152,7 +154,7 @@
             // 
             // openDirectoryButton
             // 
-            openDirectoryButton.Location = new Point(794, 5);
+            openDirectoryButton.Location = new Point(889, 5);
             openDirectoryButton.Name = "openDirectoryButton";
             openDirectoryButton.Size = new Size(99, 23);
             openDirectoryButton.TabIndex = 8;
@@ -189,7 +191,7 @@
             // toolStripStatusLabel3
             // 
             toolStripStatusLabel3.Name = "toolStripStatusLabel3";
-            toolStripStatusLabel3.Size = new Size(679, 17);
+            toolStripStatusLabel3.Size = new Size(648, 17);
             toolStripStatusLabel3.Spring = true;
             toolStripStatusLabel3.Text = "1111.23:59:59";
             toolStripStatusLabel3.TextAlign = ContentAlignment.MiddleRight;
@@ -215,6 +217,7 @@
             Controls.Add(lastDaySummaryButton);
             Controls.Add(saveButton);
             Controls.Add(workLogTextBox);
+            Icon = (Icon)resources.GetObject("$this.Icon");
             Margin = new Padding(4, 2, 4, 2);
             Name = "Form1";
             Text = "WorkLog V1.0";
