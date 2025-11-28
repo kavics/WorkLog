@@ -191,7 +191,7 @@
             // toolStripStatusLabel3
             // 
             toolStripStatusLabel3.Name = "toolStripStatusLabel3";
-            toolStripStatusLabel3.Size = new Size(648, 17);
+            toolStripStatusLabel3.Size = new Size(679, 17);
             toolStripStatusLabel3.Spring = true;
             toolStripStatusLabel3.Text = "1111.23:59:59";
             toolStripStatusLabel3.TextAlign = ContentAlignment.MiddleRight;

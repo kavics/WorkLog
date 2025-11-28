@@ -16,11 +16,14 @@ public partial class Form1 : Form
     }
 
     private bool _isControlKeyActive;
+    private bool _isShiftKeyActive;
 
     private void workLogTextBox_KeyDown(object sender, KeyEventArgs e)
     {
         if (e.KeyCode == Keys.ControlKey)
             _isControlKeyActive = true;
+        if (e.KeyCode == Keys.Shift)
+            _isShiftKeyActive = true;
         e.Handled = false;
     }
 
@@ -68,6 +71,13 @@ public partial class Form1 : Form
         if (e.KeyChar == '\u0013') // ctrl+s
         {
             Save();
+            e.Handled = true;
+        }
+
+        if (e.KeyChar == 322) // ctrl+alt+k
+        {
+            //UNDONE: open kavicsForm :)
+            var a = 9;
             e.Handled = true;
         }
     }
